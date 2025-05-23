@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use crate::constants::APPLICATION_JSON;
+use crate::like::Like;
 use crate::response::Response;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -12,6 +13,7 @@ pub struct Tweet {
     pub id: String,
     pub created_at: DateTime<Utc>,
     pub message: String,
+    pub likes: Vec<Like>,
 }
 
 impl Tweet {
@@ -20,6 +22,7 @@ impl Tweet {
             id: Uuid::new_v4().to_string(),
             created_at: Utc::now(),
             message,
+            likes: vec![],
         }
     }
 }
