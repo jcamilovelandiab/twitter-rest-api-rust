@@ -1,26 +1,8 @@
 use actix_web::{HttpResponse, delete, get, post, web::Path};
-use chrono::{DateTime, Utc};
-use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
-use crate::{constants::APPLICATION_JSON, response::Response};
+use crate::{constants::APPLICATION_JSON, domain::like::Like, response::Response};
 
 pub type Likes = Response<Like>;
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct Like {
-    id: String,
-    created_at: DateTime<Utc>,
-}
-
-impl Like {
-    pub fn new() -> Self {
-        Self {
-            id: Uuid::new_v4().to_string(),
-            created_at: Utc::now(),
-        }
-    }
-}
 
 #[get("/tweets/{id}/likes")]
 pub async fn get_all_likes_by_tweet_id(_: Path<(String,)>) -> HttpResponse {

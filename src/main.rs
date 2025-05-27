@@ -1,4 +1,5 @@
 use actix_web::{App, HttpServer, middleware};
+use controller::{like_controller, tweet_controller};
 use diesel::{
     PgConnection,
     r2d2::{self, ConnectionManager},
@@ -6,10 +7,10 @@ use diesel::{
 use std::{env, io};
 
 mod constants;
-mod like;
+mod controller;
+mod domain;
 mod response;
 mod schema;
-mod tweet;
 
 #[actix_rt::main]
 async fn main() -> io::Result<()> {
@@ -32,13 +33,13 @@ async fn main() -> io::Result<()> {
             // enable logger - always register actix-web Logger middleware last
             .wrap(middleware::Logger::default())
             // register HTTP requests handlers
-            .service(tweet::get_all)
-            .service(tweet::create)
-            .service(tweet::get_by_id)
-            .service(tweet::delete)
-            .service(like::get_all_likes_by_tweet_id)
-            .service(like::add_like)
-            .service(like::remove_like)
+            .service(tweet_controller::get_all)
+            .service(tweet_controller::create)
+            .service(tweet_controller::get_by_id)
+            .service(tweet_controller::delete)
+            .service(like_controller::get_all_likes_by_tweet_id)
+            .service(like_controller::add_like)
+            .service(like_controller::remove_like)
     })
     .bind("0.0.0.0:9091")?
     .run()
